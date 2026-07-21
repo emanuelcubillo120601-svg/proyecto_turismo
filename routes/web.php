@@ -4,16 +4,11 @@ $page = $_GET["page"] ?? "inicio";
 
 switch ($page) {
 
-    case "inicio":
+case "inicio":
 
-        echo "<h1>Costa Rica Travel</h1>";
-        echo "<p>Sistema de Gestión Turística de Costa Rica</p>";
+    require_once __DIR__ . "/../app/views/inicio.php";
 
-        echo '<a href="?page=login">Iniciar sesión</a>';
-        echo " | ";
-        echo '<a href="?page=registro">Registrarse</a>';
-
-        break;
+    break;
 
 
     case "registro":

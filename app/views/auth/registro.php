@@ -11,90 +11,138 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Registro | Costa Rica Travel</title>
+    <title>
+        Registro | Costa Rica Travel
+    </title>
+    
+<link
+    rel="stylesheet"
+    href="/proyecto_turismo/public/css/styles.css"
+>
 
 </head>
 
 <body>
 
-    <h1>Crear cuenta</h1>
+    <main class="auth-container">
 
-        <form
-            action="?page=procesar-registro"
-            method="POST"
->
-    >
+        <section class="auth-card">
 
-        <label>Nombre completo</label>
-        <br>
+            <h1>
+                Crear cuenta
+            </h1>
 
-        <input
-            type="text"
-            name="nombre"
-            required
-        >
+            <p class="subtitle">
+                Regístrate para explorar Costa Rica
+            </p>
 
-        <br><br>
+            <form
+                action="?page=procesar-registro"
+                method="POST"
+            >
 
-        <label>Correo electrónico</label>
-        <br>
+                <div class="form-group">
 
-        <input
-            type="email"
-            name="correo"
-            required
-        >
+                    <label for="nombre">
+                        Nombre completo
+                    </label>
 
-        <br><br>
+                    <input
+                        type="text"
+                        id="nombre"
+                        name="nombre"
+                        required
+                    >
 
-        <label>Teléfono</label>
-        <br>
+                </div>
 
-        <input
-            type="text"
-            name="telefono"
-        >
+                <div class="form-group">
 
-        <br><br>
+                    <label for="correo">
+                        Correo electrónico
+                    </label>
 
-        <label>Contraseña</label>
-        <br>
+                    <input
+                        type="email"
+                        id="correo"
+                        name="correo"
+                        required
+                    >
 
-        <input
-            type="password"
-            name="password"
-            minlength="8"
-            required
-        >
+                </div>
 
-        <br><br>
+                <div class="form-group">
 
-        <label>Confirmar contraseña</label>
-        <br>
+                    <label for="telefono">
+                        Teléfono
+                    </label>
 
-        <input
-            type="password"
-            name="confirmar_password"
-            minlength="8"
-            required
-        >
+                    <input
+                        type="text"
+                        id="telefono"
+                        name="telefono"
+                    >
 
-        <br><br>
+                </div>
 
-        <button type="submit">
+                <div class="form-group">
 
-            Registrarme
+                    <label for="password">
+                        Contraseña
+                    </label>
 
-        </button>
-        <p>
-           ¿Ya tienes una cuenta?
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        minlength="8"
+                        required
+                    >
 
-            <a href="?page=login">
-                Iniciar sesión
-            </a>
-        </p>
+                </div>
 
-    </form>
+                <div class="form-group">
+
+                    <label for="confirmar_password">
+                        Confirmar contraseña
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmar_password"
+                        name="confirmar_password"
+                        minlength="8"
+                        required
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+
+                    Crear cuenta
+
+                </button>
+
+            </form>
+
+            <div class="auth-footer">
+
+                <p>
+                    ¿Ya tienes una cuenta?
+
+                    <a href="?page=login">
+                        Iniciar sesión
+                    </a>
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
 
 </body>
 

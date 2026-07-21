@@ -11,58 +11,94 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Iniciar sesión | Costa Rica Travel</title>
+    <title>
+        Iniciar sesión | Costa Rica Travel
+    </title>
+
+<link
+    rel="stylesheet"
+    href="/proyecto_turismo/public/css/styles.css"
+>
 
 </head>
 
 <body>
 
-    <h1>Iniciar sesión</h1>
+    <main class="auth-container">
 
-    <form
-        action="?page=procesar-login"
-        method="POST"
-    >
+        <section class="auth-card">
 
-        <label>Correo electrónico</label>
+            <h1>
+                Costa Rica Travel
+            </h1>
 
-        <br>
+            <p class="subtitle">
+                Inicia sesión para continuar
+            </p>
 
-        <input
-            type="email"
-            name="correo"
-            required
-        >
+            <form
+                action="?page=procesar-login"
+                method="POST"
+            >
 
-        <br><br>
+                <div class="form-group">
 
-        <label>Contraseña</label>
+                    <label for="correo">
+                        Correo electrónico
+                    </label>
 
-        <br>
+                    <input
+                        type="email"
+                        id="correo"
+                        name="correo"
+                        placeholder="ejemplo@correo.com"
+                        required
+                    >
 
-        <input
-            type="password"
-            name="password"
-            required
-        >
+                </div>
 
-        <br><br>
+                <div class="form-group">
 
-        <button type="submit">
+                    <label for="password">
+                        Contraseña
+                    </label>
 
-            Iniciar sesión
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Ingresa tu contraseña"
+                        required
+                    >
 
-        </button>
+                </div>
 
-    </form>
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
 
-    <p>
-        ¿No tienes una cuenta?
+                    Iniciar sesión
 
-        <a href="?page=registro">
-            Regístrate
-        </a>
-    </p>
+                </button>
+
+            </form>
+
+            <div class="auth-footer">
+
+                <p>
+                    ¿No tienes una cuenta?
+
+                    <a href="?page=registro">
+                        Regístrate
+                    </a>
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
 
 </body>
 

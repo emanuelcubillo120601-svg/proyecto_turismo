@@ -179,4 +179,68 @@ public function cambiarEstado($id)
         ":id" => $id
     ]);
 }
+
+public function crearTokenRecuperacion(
+    $usuarioId,
+    $tokenHash,
+    $fechaExpiracion
+) {
+    $sql = "INSERT INTO recuperacion_password
+            (
+                usuario_id,
+                token_hash,
+                fecha_expiracion
+            )
+            VALUES
+            (
+                :usuario_id,
+                :token_hash,
+                :fecha_expiracion
+            )";
+
+    $stmt = $this->conexion->prepare($sql);
+
+    return $stmt->execute([
+        ":usuario_id" => $usuarioId,
+        ":token_hash" => $tokenHash,
+        ":fecha_expiracion" => $fechaExpiracion
+    ]);
+}
+
+
+public function buscarTokenValido($tokenHash)
+{
+    $sql = "SELECT
+                recuperacion_password.id,
+                recuperacion_password.usuario_id
+            FROM recuperacion_password
+
+            WHERE token_hash = :token_hash
+            AND usado = 0
+            AND fecha_expiracion >= NOW()
+
+            LIMIT 1";
+
+    $stmt = $this->conexion->prepare($sql);
+
+    $stmt->execute([
+        ":token_hash" => $tokenHash
+    ]);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
+public function marcarTokenUsado($id)
+{
+    $sql = "UPDATE recuperacion_password
+            SET usado = 1
+            WHERE id = :id";
+
+    $stmt = $this->conexion->prepare($sql);
+
+    return $stmt->execute([
+        ":id" => $id
+    ]);
+}
 }

@@ -218,4 +218,179 @@ public function logout(): void
 
     exit;
 }
+
+public function recuperarPassword()
+{
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+        $correo = trim(
+            $_POST["correo"] ?? ""
+        );
+
+        if (
+            $correo === "" ||
+            !filter_var(
+                $correo,
+                FILTER_VALIDATE_EMAIL
+            )
+        ) {
+
+            $error =
+                "Ingrese un correo electrónico válido.";
+
+            require_once __DIR__ .
+                "/../views/auth/recuperar.php";
+
+            return;
+        }
+
+        $database = new Database();
+
+        $conexion = $database->conectar();
+
+        $modelo = new Usuario($conexion);
+
+        $usuario =
+            $modelo->buscarPorCorreo($correo);
+
+        /*
+         * No revelamos si el correo existe
+         * en el mensaje final.
+         */
+        if ($usuario) {
+
+            $token =
+                bin2hex(
+                    random_bytes(32)
+                );
+
+            $tokenHash =
+                hash("sha256", $token);
+
+            $fechaExpiracion =
+                date(
+                    "Y-m-d H:i:s",
+                    strtotime("+30 minutes")
+                );
+
+            $modelo->crearTokenRecuperacion(
+                $usuario["id"],
+                $tokenHash,
+                $fechaExpiracion
+            );
+
+            /*
+             * Como el proyecto no envía correo real,
+             * mostramos el enlace para la demostración.
+             */
+            $enlaceRecuperacion =
+                "?page=restablecer-password&token="
+                . urlencode($token);
+        }
+
+        $mensaje =
+            "Si el correo está registrado, se generó una solicitud de recuperación.";
+
+        require_once __DIR__ .
+            "/../views/auth/recuperar.php";
+
+        return;
+    }
+
+    require_once __DIR__ .
+        "/../views/auth/recuperar.php";
+}
+
+
+public function restablecerPassword()
+{
+    $token =
+        $_GET["token"] ??
+        $_POST["token"] ??
+        "";
+
+    if ($token === "") {
+
+        echo "Token de recuperación inválido.";
+
+        return;
+    }
+
+    $tokenHash =
+        hash("sha256", $token);
+
+    $database = new Database();
+
+    $conexion = $database->conectar();
+
+    $modelo = new Usuario($conexion);
+
+    $registro =
+        $modelo->buscarTokenValido(
+            $tokenHash
+        );
+
+    if (!$registro) {
+
+        echo "El enlace de recuperación no es válido o ha expirado.";
+
+        return;
+    }
+
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+        $password =
+            $_POST["password"] ?? "";
+
+        $confirmar =
+            $_POST["confirmar_password"] ?? "";
+
+        if (strlen($password) < 8) {
+
+            $error =
+                "La contraseña debe tener al menos 8 caracteres.";
+
+            require_once __DIR__ .
+                "/../views/auth/restablecer.php";
+
+            return;
+        }
+
+        if ($password !== $confirmar) {
+
+            $error =
+                "Las contraseñas no coinciden.";
+
+            require_once __DIR__ .
+                "/../views/auth/restablecer.php";
+
+            return;
+        }
+
+        $passwordHash =
+            password_hash(
+                $password,
+                PASSWORD_DEFAULT
+            );
+
+        $modelo->actualizarPassword(
+            $registro["usuario_id"],
+            $passwordHash
+        );
+
+        $modelo->marcarTokenUsado(
+            $registro["id"]
+        );
+
+        header(
+            "Location: ?page=login&password=actualizada"
+        );
+
+        exit;
+    }
+
+    require_once __DIR__ .
+        "/../views/auth/restablecer.php";
+}
+
 }

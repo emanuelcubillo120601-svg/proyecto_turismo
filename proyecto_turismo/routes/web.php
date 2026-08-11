@@ -551,27 +551,7 @@ switch ($page) {
     // ERROR 404
     // ==========================
 
-    default:
 
-        http_response_code(404);
-
-        echo "<h1>Error 404</h1>";
-
-        echo "<p>La página solicitada no existe.</p>";
-
-        break;
-
-        case "admin-usuarios":
-
-    if (
-        !isset($_SESSION["usuario_id"]) ||
-        (int)$_SESSION["rol_id"] !== 1
-    ) {
-
-        header("Location: ?page=login");
-
-        exit;
-    }
 
     require_once __DIR__ .
         "/../app/controllers/UsuarioController.php";
@@ -624,4 +604,51 @@ case "admin-usuario-estado":
     $controller->index();
 
     break;
+
+case "recuperar-password":
+
+    require_once __DIR__ .
+        "/../app/controllers/AuthController.php";
+
+    $controller =
+        new AuthController();
+
+    $controller->recuperarPassword();
+
+    break;
+
+
+case "restablecer-password":
+
+    require_once __DIR__ .
+        "/../app/controllers/AuthController.php";
+
+    $controller =
+        new AuthController();
+
+    $controller->restablecerPassword();
+
+    break;
+
+    default:
+
+        http_response_code(404);
+
+        echo "<h1>Error 404</h1>";
+
+        echo "<p>La página solicitada no existe.</p>";
+
+        break;
+
+        case "admin-usuarios":
+
+    if (
+        !isset($_SESSION["usuario_id"]) ||
+        (int)$_SESSION["rol_id"] !== 1
+    ) {
+
+        header("Location: ?page=login");
+
+        exit;
+    }    
 }

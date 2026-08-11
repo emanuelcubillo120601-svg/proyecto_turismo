@@ -69,6 +69,19 @@
                     ₡<?= number_format($hotel["precio_noche"], 2) ?>
                 </p>
 
+         <?php if ($hotel["precio_usd"] !== null): ?>
+
+                <p>
+                    <strong>Aproximado en USD:</strong>
+
+                    $<?= number_format(
+                        $hotel["precio_usd"],
+                        2
+                    ) ?>
+                </p>
+
+            <?php endif; ?>
+
                 <p>
                     <strong>Habitaciones:</strong>
                     <?= (int)$hotel["cantidad_habitaciones"] ?>

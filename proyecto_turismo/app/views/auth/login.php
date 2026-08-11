@@ -96,6 +96,16 @@
 
             </div>
 
+            <div class="auth-footer">
+
+                <p>
+                    <a href="?page=recuperar-password">
+                        ¿Olvidaste tu contraseña?
+                    </a>
+                </p>
+
+            </div>
+
         </section>
 
     </main>

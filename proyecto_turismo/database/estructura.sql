@@ -207,4 +207,30 @@ CREATE TABLE reservacion_actividades (
         FOREIGN KEY (actividad_id)
         REFERENCES actividades(id)
 
+
+-- ==========================
+-- TABLA DE RECUPERACION DE PASSWORD
+-- ==========================
+
+CREATE TABLE recuperacion_password (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    usuario_id INT NOT NULL,
+
+    token_hash VARCHAR(255) NOT NULL,
+
+    fecha_expiracion DATETIME NOT NULL,
+
+    usado TINYINT(1) DEFAULT 0,
+
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_recuperacion_usuario
+        FOREIGN KEY (usuario_id)
+        REFERENCES usuarios(id)
+        ON DELETE CASCADE
+
+);
+
 );

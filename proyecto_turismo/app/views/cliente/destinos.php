@@ -64,6 +64,36 @@
                     <?= htmlspecialchars($destino["descripcion"]) ?>
                 </p>
 
+                <?php if (!empty($destino["clima"])): ?>
+
+    <br>
+
+    <p>
+            <strong>Temperatura actual:</strong>
+
+            <?= htmlspecialchars(
+                $destino["clima"]["temperature_2m"]
+            ) ?> °C
+        </p>
+
+        <p>
+            <strong>Viento:</strong>
+
+            <?= htmlspecialchars(
+                $destino["clima"]["wind_speed_10m"]
+            ) ?> km/h
+        </p>
+
+    <?php else: ?>
+
+        <br>
+
+        <p>
+            Clima no disponible.
+        </p>
+
+    <?php endif; ?>
+
             </div>
 
         <?php endforeach; ?>

@@ -64,6 +64,19 @@
                     ₡<?= number_format($actividad["precio"], 2) ?>
                 </p>
 
+        <?php if ($actividad["precio_usd"] !== null): ?>
+
+                <p>
+                    <strong>Aproximado en USD:</strong>
+
+                    $<?= number_format(
+                        $actividad["precio_usd"],
+                        2
+                    ) ?>
+                </p>
+
+        <?php endif; ?>
+
                 <p>
                     <strong>Duración:</strong>
                     <?= htmlspecialchars($actividad["duracion"] ?? "") ?>

@@ -123,6 +123,20 @@
 
 
             <a
+                href="?page=reservar"
+                class="dashboard-card"
+>
+                <h3>
+                    Reservar
+                </h3>
+
+                <p>
+                    Reserva hospedaje y actividades.
+                </p>
+            </a>
+
+
+            <a
                 href="?page=perfil"
                 class="dashboard-card"
             >

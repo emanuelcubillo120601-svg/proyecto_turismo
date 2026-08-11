@@ -168,4 +168,22 @@ class Actividad
             ":id" => $id
         ]);
     }
+
+        public function obtenerActivas()
+{
+    $sql = "SELECT
+                actividades.*,
+                destinos.nombre AS destino_nombre
+            FROM actividades
+            INNER JOIN destinos
+                ON actividades.destino_id = destinos.id
+            WHERE actividades.estado = 1
+            AND destinos.estado = 1
+            ORDER BY actividades.nombre ASC";
+
+    $stmt = $this->conexion->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }

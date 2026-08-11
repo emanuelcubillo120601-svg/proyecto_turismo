@@ -176,4 +176,22 @@ class Hotel
             ":id" => $id
         ]);
     }
+
+    public function obtenerActivos()
+{
+    $sql = "SELECT
+                hoteles.*,
+                destinos.nombre AS destino_nombre
+            FROM hoteles
+            INNER JOIN destinos
+                ON hoteles.destino_id = destinos.id
+            WHERE hoteles.estado = 1
+            AND destinos.estado = 1
+            ORDER BY hoteles.nombre ASC";
+
+    $stmt = $this->conexion->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }

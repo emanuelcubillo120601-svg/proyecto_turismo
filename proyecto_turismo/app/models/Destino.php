@@ -145,4 +145,17 @@ class Destino
             ":id" => $id
         ]);
     }
+
+    public function obtenerActivos()
+{
+    $sql = "SELECT *
+            FROM destinos
+            WHERE estado = 1
+            ORDER BY nombre ASC";
+
+    $stmt = $this->conexion->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }

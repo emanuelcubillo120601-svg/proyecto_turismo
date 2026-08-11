@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
@@ -12,7 +11,7 @@
     >
 
     <title>
-        Actividades | Costa Rica Travel
+        Administración de Actividades
     </title>
 
     <link
@@ -42,7 +41,7 @@
 
 <main class="dashboard-container">
 
-    <div class="welcome">
+    <section class="welcome">
 
         <h1>
             Actividades turísticas
@@ -52,7 +51,7 @@
             Administra las actividades disponibles.
         </p>
 
-    </div>
+    </section>
 
 
     <p>
@@ -66,7 +65,6 @@
         </a>
 
     </p>
-
 
     <br>
 
@@ -110,138 +108,160 @@
     </form>
 
 
-    <div style="overflow-x:auto;">
+    <?php if (empty($actividades)): ?>
 
-        <table
-            style="
-                width:100%;
-                border-collapse:collapse;
-                background:white;
-            "
-        >
+        <div class="dashboard-card">
 
-            <thead>
+            <p>
+                No hay actividades registradas.
+            </p>
 
-                <tr>
+        </div>
 
-                    <th style="padding:12px;">
-                        ID
-                    </th>
+    <?php else: ?>
 
-                    <th style="padding:12px;">
-                        Nombre
-                    </th>
 
-                    <th style="padding:12px;">
-                        Destino
-                    </th>
+        <div style="overflow-x:auto;">
 
-                    <th style="padding:12px;">
-                        Precio
-                    </th>
+            <table
+                style="
+                    width:100%;
+                    border-collapse:collapse;
+                    background:white;
+                "
+            >
 
-                    <th style="padding:12px;">
-                        Duración
-                    </th>
+                <thead>
 
-                    <th style="padding:12px;">
-                        Cupo
-                    </th>
+                    <tr>
 
-                    <th style="padding:12px;">
-                        Estado
-                    </th>
+                        <th style="padding:12px;">ID</th>
 
-                    <th style="padding:12px;">
-                        Acciones
-                    </th>
+                        <th style="padding:12px;">Nombre</th>
 
-                </tr>
+                        <th style="padding:12px;">Destino</th>
 
-            </thead>
+                        <th style="padding:12px;">Precio</th>
 
-            <tbody>
+                        <th style="padding:12px;">Duración</th>
 
-            <?php foreach ($actividades as $actividad): ?>
+                        <th style="padding:12px;">Cupo</th>
 
-                <tr
-                    style="
-                        border-top:1px solid #ddd;
-                    "
-                >
+                        <th style="padding:12px;">Estado</th>
 
-                    <td style="padding:12px;">
-                        <?= (int)$actividad["id"] ?>
-                    </td>
+                        <th style="padding:12px;">Acciones</th>
 
-                    <td style="padding:12px;">
-                        <?= htmlspecialchars($actividad["nombre"]) ?>
-                    </td>
+                    </tr>
 
-                    <td style="padding:12px;">
-                        <?= htmlspecialchars($actividad["destino_nombre"]) ?>
-                    </td>
+                </thead>
 
-                    <td style="padding:12px;">
+                <tbody>
 
-                        ₡<?= number_format(
-                            $actividad["precio"],
-                            2
-                        ) ?>
+                <?php foreach ($actividades as $actividad): ?>
 
-                    </td>
+                    <tr
+                        style="
+                            border-top:1px solid #ddd;
+                            text-align:center;
+                        "
+                    >
 
-                    <td style="padding:12px;">
-                        <?= htmlspecialchars(
-                            $actividad["duracion"] ?? ""
-                        ) ?>
-                    </td>
+                        <td style="padding:12px;">
+                            <?= (int)$actividad["id"] ?>
+                        </td>
 
-                    <td style="padding:12px;">
-                        <?= (int)$actividad["cupo_maximo"] ?>
-                    </td>
+                        <td style="padding:12px;">
+                            <?= htmlspecialchars($actividad["nombre"]) ?>
+                        </td>
 
-                    <td style="padding:12px;">
+                        <td style="padding:12px;">
+                            <?= htmlspecialchars($actividad["destino_nombre"]) ?>
+                        </td>
 
-                        <?= (int)$actividad["estado"] === 1
-                            ? "Activo"
-                            : "Inactivo"
-                        ?>
+                        <td style="padding:12px;">
 
-                    </td>
+                            ₡<?= number_format(
+                                $actividad["precio"],
+                                2
+                            ) ?>
 
-                    <td style="padding:12px;">
+                        </td>
 
-                        <a
-                            href="?page=admin-actividad-editar&id=<?= (int)$actividad["id"] ?>"
-                        >
-                            Editar
-                        </a>
+                        <td style="padding:12px;">
+                            <?= htmlspecialchars(
+                                $actividad["duracion"] ?? ""
+                            ) ?>
+                        </td>
 
-                        |
+                        <td style="padding:12px;">
+                            <?= (int)$actividad["cupo_maximo"] ?>
+                        </td>
 
-                        <a
-                            href="?page=admin-actividad-estado&id=<?= (int)$actividad["id"] ?>"
-                        >
+                        <td style="padding:12px;">
 
                             <?= (int)$actividad["estado"] === 1
-                                ? "Desactivar"
-                                : "Activar"
+                                ? "Activo"
+                                : "Inactivo"
                             ?>
 
-                        </a>
+                        </td>
 
-                    </td>
+                        <td style="padding:12px;">
 
-                </tr>
+                            <a
+                                href="?page=admin-actividad-editar&id=<?= (int)$actividad["id"] ?>"
+                                style="margin-right:10px;"
+                            >
+                                Editar
+                            </a>
 
-            <?php endforeach; ?>
 
-            </tbody>
+                            <form
+                                method="POST"
+                                action="?page=admin-actividad-estado"
+                                style="display:inline;"
+                            >
 
-        </table>
+                                <?= CsrfHelper::input() ?>
 
-    </div>
+                                <input
+                                    type="hidden"
+                                    name="id"
+                                    value="<?= (int)$actividad["id"] ?>"
+                                >
+
+                                <button
+                                    type="submit"
+                                    style="
+                                        border:none;
+                                        background:none;
+                                        cursor:pointer;
+                                        text-decoration:underline;
+                                    "
+                                >
+
+                                    <?= (int)$actividad["estado"] === 1
+                                        ? "Desactivar"
+                                        : "Activar"
+                                    ?>
+
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                <?php endforeach; ?>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    <?php endif; ?>
 
 </main>
 

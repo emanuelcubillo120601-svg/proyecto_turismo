@@ -14,6 +14,8 @@ class AuthController
 
         }
 
+        CsrfHelper::validar();
+
         $nombre = trim($_POST["nombre"] ?? "");
         $correo = trim($_POST["correo"] ?? "");
         $telefono = trim($_POST["telefono"] ?? "");
@@ -101,78 +103,117 @@ public function login(): void
 {
     if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
-        echo "Método no permitido.";
-        return;
-
+        header("Location: ?page=login");
+        exit;
     }
 
-    $correo = trim($_POST["correo"] ?? "");
-    $password = $_POST["password"] ?? "";
+    CsrfHelper::validar();
+
+    $correo = trim(
+        $_POST["correo"] ?? ""
+    );
+
+    $password =
+        $_POST["password"] ?? "";
+
 
     if (
-        empty($correo) ||
-        empty($password)
+        $correo === "" ||
+        $password === ""
     ) {
 
-        echo "Debe completar todos los campos.";
-        return;
+        $_SESSION["login_error"] =
+            "Ingrese su correo y contraseña.";
 
+        header("Location: ?page=login");
+        exit;
     }
 
-    if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
 
-        echo "El correo electrónico no es válido.";
-        return;
+    if (!filter_var(
+        $correo,
+        FILTER_VALIDATE_EMAIL
+    )) {
 
+        $_SESSION["login_error"] =
+            "Ingrese un correo electrónico válido.";
+
+        header("Location: ?page=login");
+        exit;
     }
 
-    $database = new Database();
 
-    $conexion = $database->conectar();
+    $database =
+        new Database();
+
+    $conexion =
+        $database->conectar();
+
 
     if (!$conexion) {
 
-        echo "No fue posible iniciar sesión.";
-        return;
+        $_SESSION["login_error"] =
+            "No fue posible iniciar sesión.";
 
+        header("Location: ?page=login");
+        exit;
     }
 
-    $usuarioModel = new Usuario($conexion);
 
-    $usuario = $usuarioModel->buscarPorCorreo($correo);
+    $usuarioModel =
+        new Usuario($conexion);
 
-    if (!$usuario) {
 
-        echo "Correo o contraseña incorrectos.";
-        return;
+    $usuario =
+        $usuarioModel->buscarPorCorreo(
+            $correo
+        );
 
+
+    if (
+        !$usuario ||
+        !password_verify(
+            $password,
+            $usuario["password"]
+        )
+    ) {
+
+        $_SESSION["login_error"] =
+            "Correo o contraseña incorrectos.";
+
+        header("Location: ?page=login");
+        exit;
     }
 
-    if (!password_verify($password, $usuario["password"])) {
-
-        echo "Correo o contraseña incorrectos.";
-        return;
-
-    }
 
     if ((int)$usuario["estado"] !== 1) {
 
-        echo "Esta cuenta se encuentra deshabilitada.";
-        return;
+        $_SESSION["login_error"] =
+            "Esta cuenta se encuentra desactivada.";
 
+        header("Location: ?page=login");
+        exit;
     }
+
 
     session_regenerate_id(true);
 
-    $_SESSION["usuario_id"] = $usuario["id"];
 
-    $_SESSION["usuario_nombre"] = $usuario["nombre"];
+    $_SESSION["usuario_id"] =
+        $usuario["id"];
 
-    $_SESSION["usuario_correo"] = $usuario["correo"];
+    $_SESSION["usuario_nombre"] =
+        $usuario["nombre"];
 
-    $_SESSION["rol_id"] = $usuario["rol_id"];
+    $_SESSION["usuario_correo"] =
+        $usuario["correo"];
 
-    $_SESSION["rol"] = $usuario["rol"];
+    $_SESSION["rol_id"] =
+        $usuario["rol_id"];
+
+    $_SESSION["rol"] =
+        $usuario["rol"];
+
 
     if ((int)$usuario["rol_id"] === 1) {
 
@@ -181,8 +222,8 @@ public function login(): void
         );
 
         exit;
-
     }
+
 
     header(
         "Location: ?page=cliente"
@@ -193,11 +234,21 @@ public function login(): void
 
 public function logout(): void
 {
+    if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+
+        http_response_code(405);
+
+        exit("Método no permitido.");
+    }
+
+    CsrfHelper::validar();
+
     $_SESSION = [];
 
     if (ini_get("session.use_cookies")) {
 
-        $params = session_get_cookie_params();
+        $params =
+            session_get_cookie_params();
 
         setcookie(
             session_name(),
@@ -222,6 +273,9 @@ public function logout(): void
 public function recuperarPassword()
 {
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    CsrfHelper::validar();
+
 
         $correo = trim(
             $_POST["correo"] ?? ""
@@ -338,6 +392,9 @@ public function restablecerPassword()
     }
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+        CsrfHelper::validar();
+
 
         $password =
             $_POST["password"] ?? "";

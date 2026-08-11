@@ -36,10 +36,27 @@
                 Inicia sesión para continuar
             </p>
 
+            <?php if (isset($_SESSION["login_error"])): ?>
+
+                <div class="login-error">
+
+                    <?= htmlspecialchars(
+                        $_SESSION["login_error"]
+                    ) ?>
+
+                </div>
+
+                <?php
+                unset($_SESSION["login_error"]);
+                ?>
+
+            <?php endif; ?>
+
             <form
                 action="?page=procesar-login"
                 method="POST"
             >
+         <?= CsrfHelper::input() ?>
 
                 <div class="form-group">
 

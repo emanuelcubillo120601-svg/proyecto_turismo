@@ -36,6 +36,9 @@
 
     <form method="POST">
 
+    <?= CsrfHelper::input() ?>
+
+
         <div>
 
             <label for="nombre">

@@ -168,24 +168,30 @@
 
                     <td style="padding:12px;">
 
-                        <a
-                            href="?page=admin-destino-editar&id=<?= (int)$destino["id"] ?>"
-                        >
-                            Editar
-                        </a>
+<form
+    method="POST"
+    action="?page=admin-destino-estado"
+    style="display:inline;"
+>
 
-                        |
+    <?= CsrfHelper::input() ?>
 
-                        <a
-                            href="?page=admin-destino-estado&id=<?= (int)$destino["id"] ?>"
-                        >
+    <input
+        type="hidden"
+        name="id"
+        value="<?= (int)$destino["id"] ?>"
+    >
 
-                            <?= (int)$destino["estado"] === 1
-                                ? "Desactivar"
-                                : "Activar"
-                            ?>
+    <button type="submit">
 
-                        </a>
+        <?= (int)$destino["estado"] === 1
+            ? "Desactivar"
+            : "Activar"
+        ?>
+
+    </button>
+
+</form>
 
                     </td>
 

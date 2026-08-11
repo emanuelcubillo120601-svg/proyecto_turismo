@@ -15,145 +15,177 @@
         Panel Administrativo | Costa Rica Travel
     </title>
 
-<link
-    rel="stylesheet"
-    href="/proyecto_turismo/public/css/styles.css"
->
+    <link
+        rel="stylesheet"
+        href="/proyecto_turismo/public/css/styles.css"
+    >
 
 </head>
 
 <body>
 
-    <header class="dashboard-header">
+<header class="dashboard-header">
 
-        <h2>
-            Costa Rica Travel
-        </h2>
+    <h2>
+        Costa Rica Travel
+    </h2>
 
-        <a
-            href="?page=logout"
+    <form
+        method="POST"
+        action="?page=logout"
+    >
+
+        <?= CsrfHelper::input() ?>
+
+        <button
+            type="submit"
             class="logout-link"
+            style="
+                background:none;
+                border:none;
+                cursor:pointer;
+            "
         >
             Cerrar sesión
-        </a>
+        </button>
 
-    </header>
+    </form>
 
-    <main class="dashboard-container">
+</header>
 
-        <section class="welcome">
 
-            <h1>
-                Panel Administrativo
-            </h1>
+<main class="dashboard-container">
+
+    <section class="welcome">
+
+        <h1>
+            Panel Administrativo
+        </h1>
+
+        <p>
+            Bienvenido,
+            <?= htmlspecialchars($_SESSION["usuario_nombre"] ?? "Administrador") ?>
+        </p>
+
+    </section>
+
+
+    <section class="dashboard-grid">
+
+        <a
+            href="?page=admin-usuarios"
+            class="dashboard-card"
+        >
+
+            <h3>
+                Usuarios
+            </h3>
 
             <p>
-                Bienvenido,
-                <?= htmlspecialchars($_SESSION["usuario_nombre"]) ?>
+                Administra los usuarios registrados.
             </p>
 
-        </section>
-
-        <section class="dashboard-grid">
-
-            <a
-                href="?page=admin-usuarios"
-                class="dashboard-card"
-            >
-
-                <h3>
-                    Usuarios
-                </h3>
-
-                <p>
-                    Administra los usuarios registrados.
-                </p>
-
-            </a>
+        </a>
 
 
-            <a
-                href="?page=admin-destinos"
-                class="dashboard-card"
-            >
+        <a
+            href="?page=admin-destinos"
+            class="dashboard-card"
+        >
 
-                <h3>
-                    Destinos
-                </h3>
+            <h3>
+                Destinos
+            </h3>
 
-                <p>
-                    Registra y administra destinos turísticos.
-                </p>
+            <p>
+                Registra y administra destinos turísticos.
+            </p>
 
-            </a>
-
-
-            <a
-                href="?page=admin-hoteles"
-                class="dashboard-card"
-            >
-
-                <h3>
-                    Hoteles
-                </h3>
-
-                <p>
-                    Administra hoteles, precios y disponibilidad.
-                </p>
-
-            </a>
+        </a>
 
 
-            <a
-                href="?page=admin-actividades"
-                class="dashboard-card"
-            >
+        <a
+            href="?page=admin-hoteles"
+            class="dashboard-card"
+        >
 
-                <h3>
-                    Actividades
-                </h3>
+            <h3>
+                Hoteles
+            </h3>
 
-                <p>
-                    Gestiona tours y actividades turísticas.
-                </p>
+            <p>
+                Administra hoteles, precios y disponibilidad.
+            </p>
 
-            </a>
-
-
-            <a
-                href="?page=admin-reservas"
-                class="dashboard-card"
-            >
-
-                <h3>
-                    Reservaciones
-                </h3>
-
-                <p>
-                    Consulta y administra las reservaciones.
-                </p>
-
-            </a>
+        </a>
 
 
-            <a
-                href="?page=reportes"
-                class="dashboard-card"
-            >
+        <a
+            href="?page=admin-actividades"
+            class="dashboard-card"
+        >
 
-                <h3>
-                    Reportes
-                </h3>
+            <h3>
+                Actividades
+            </h3>
 
-                <p>
-                    Consulta estadísticas e información general.
-                </p>
+            <p>
+                Gestiona tours y actividades turísticas.
+            </p>
 
-            </a>
+        </a>
 
-        </section>
 
-    </main>
+        <a
+            href="?page=admin-reservas"
+            class="dashboard-card"
+        >
+
+            <h3>
+                Reservaciones
+            </h3>
+
+            <p>
+                Consulta las reservaciones realizadas.
+            </p>
+
+        </a>
+
+
+        <a
+            href="?page=reportes"
+            class="dashboard-card"
+        >
+
+            <h3>
+                Reportes
+            </h3>
+
+            <p>
+                Consulta estadísticas generales del sistema.
+            </p>
+
+        </a>
+
+
+        <a
+            href="?page=bitacora"
+            class="dashboard-card"
+        >
+
+            <h3>
+                Bitácora
+            </h3>
+
+            <p>
+                Consulta las acciones realizadas en el sistema.
+            </p>
+
+        </a>
+
+    </section>
+
+</main>
 
 </body>
 

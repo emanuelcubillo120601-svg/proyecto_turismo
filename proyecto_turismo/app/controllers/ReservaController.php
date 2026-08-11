@@ -6,7 +6,8 @@ class ReservaController
 {
     public function crear()
     {
-        $modelo = new Reserva();
+        $modelo =
+            new Reserva();
 
         $hoteles =
             $modelo->obtenerHotelesActivos();
@@ -15,6 +16,8 @@ class ReservaController
             $modelo->obtenerActividadesActivas();
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+            CsrfHelper::validar();
 
             $hotel_id =
                 (int)($_POST["hotel_id"] ?? 0);
@@ -90,9 +93,11 @@ class ReservaController
             "/../views/cliente/reservas/create.php";
     }
 
+
     public function misReservas()
     {
-        $modelo = new Reserva();
+        $modelo =
+            new Reserva();
 
         $reservas =
             $modelo->obtenerPorUsuario(
@@ -103,9 +108,11 @@ class ReservaController
             "/../views/cliente/reservas/index.php";
     }
 
+
     public function admin()
     {
-        $modelo = new Reserva();
+        $modelo =
+            new Reserva();
 
         $reservas =
             $modelo->obtenerTodas();

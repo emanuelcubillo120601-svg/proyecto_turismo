@@ -62,6 +62,7 @@
             method="POST"
             action="?page=recuperar-password"
         >
+         <?= CsrfHelper::input() ?>
 
             <div class="form-group">
 

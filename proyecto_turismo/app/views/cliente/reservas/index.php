@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -11,7 +12,7 @@
     >
 
     <title>
-        Administración de Hoteles
+        Mis reservaciones
     </title>
 
     <link
@@ -21,7 +22,9 @@
 
 </head>
 
+
 <body>
+
 
 <header class="dashboard-header">
 
@@ -30,10 +33,10 @@
     </h2>
 
     <a
-        href="?page=admin"
+        href="?page=cliente"
         class="logout-link"
     >
-        Volver al panel
+        Volver al inicio
     </a>
 
 </header>
@@ -41,41 +44,43 @@
 
 <main class="dashboard-container">
 
+
     <section class="welcome">
 
         <h1>
-            Administración de Hoteles
+            Mis reservaciones
         </h1>
 
         <p>
-            Registra, modifica y administra los hoteles del sistema.
+            Consulta las reservaciones que has realizado.
         </p>
 
     </section>
 
 
-    <div style="margin-bottom: 25px;">
+    <div style="margin-bottom:25px;">
 
         <a
-            href="?page=admin-hotel-crear"
+            href="?page=reservar"
             class="btn btn-primary"
             style="width:auto;"
         >
-            + Registrar hotel
+            + Nueva reservación
         </a>
 
     </div>
 
 
-    <?php if (empty($hoteles)): ?>
+    <?php if (empty($reservas)): ?>
 
         <div class="dashboard-card">
 
             <p>
-                No hay hoteles registrados.
+                Todavía no tienes reservaciones registradas.
             </p>
 
         </div>
+
 
     <?php else: ?>
 
@@ -85,8 +90,8 @@
             <table
                 style="
                     width:100%;
-                    border-collapse:collapse;
                     background:white;
+                    border-collapse:collapse;
                 "
             >
 
@@ -99,35 +104,31 @@
                         </th>
 
                         <th style="padding:12px;">
-                            Nombre
-                        </th>
-
-                        <th style="padding:12px;">
                             Destino
                         </th>
 
                         <th style="padding:12px;">
-                            Categoría
+                            Hotel
                         </th>
 
                         <th style="padding:12px;">
-                            Dirección
+                            Entrada
                         </th>
 
                         <th style="padding:12px;">
-                            Precio por noche
+                            Salida
                         </th>
 
                         <th style="padding:12px;">
-                            Habitaciones
+                            Personas
+                        </th>
+
+                        <th style="padding:12px;">
+                            Total estimado
                         </th>
 
                         <th style="padding:12px;">
                             Estado
-                        </th>
-
-                        <th style="padding:12px;">
-                            Acciones
                         </th>
 
                     </tr>
@@ -137,7 +138,7 @@
 
                 <tbody>
 
-                <?php foreach ($hoteles as $hotel): ?>
+                <?php foreach ($reservas as $reserva): ?>
 
                     <tr
                         style="
@@ -148,7 +149,7 @@
 
                         <td style="padding:12px;">
 
-                            <?= (int)$hotel["id"] ?>
+                            <?= (int)$reserva["id"] ?>
 
                         </td>
 
@@ -156,7 +157,7 @@
                         <td style="padding:12px;">
 
                             <?= htmlspecialchars(
-                                $hotel["nombre"]
+                                $reserva["destino_nombre"]
                             ) ?>
 
                         </td>
@@ -165,7 +166,7 @@
                         <td style="padding:12px;">
 
                             <?= htmlspecialchars(
-                                $hotel["destino_nombre"] ?? ""
+                                $reserva["hotel_nombre"]
                             ) ?>
 
                         </td>
@@ -174,7 +175,7 @@
                         <td style="padding:12px;">
 
                             <?= htmlspecialchars(
-                                $hotel["categoria"] ?? ""
+                                $reserva["fecha_entrada"]
                             ) ?>
 
                         </td>
@@ -183,8 +184,15 @@
                         <td style="padding:12px;">
 
                             <?= htmlspecialchars(
-                                $hotel["direccion"] ?? ""
+                                $reserva["fecha_salida"]
                             ) ?>
+
+                        </td>
+
+
+                        <td style="padding:12px;">
+
+                            <?= (int)$reserva["cantidad_personas"] ?>
 
                         </td>
 
@@ -192,7 +200,7 @@
                         <td style="padding:12px;">
 
                             ₡<?= number_format(
-                                $hotel["precio_noche"],
+                                $reserva["total_estimado"],
                                 2
                             ) ?>
 
@@ -201,72 +209,9 @@
 
                         <td style="padding:12px;">
 
-                            <?= (int)$hotel["cantidad_habitaciones"] ?>
-
-                        </td>
-
-
-                        <td style="padding:12px;">
-
-                            <?php if ((int)$hotel["estado"] === 1): ?>
-
-                                Activo
-
-                            <?php else: ?>
-
-                                Inactivo
-
-                            <?php endif; ?>
-
-                        </td>
-
-
-                        <td style="padding:12px;">
-
-                            <!-- EDITAR -->
-
-                            <a
-                                href="?page=admin-hotel-editar&id=<?= (int)$hotel["id"] ?>"
-                                style="margin-right:10px;"
-                            >
-                                Editar
-                            </a>
-
-
-                            <!-- ACTIVAR / DESACTIVAR -->
-
-                            <form
-                                method="POST"
-                                action="?page=admin-hotel-estado"
-                                style="display:inline;"
-                            >
-
-                                <?= CsrfHelper::input() ?>
-
-                                <input
-                                    type="hidden"
-                                    name="id"
-                                    value="<?= (int)$hotel["id"] ?>"
-                                >
-
-                                <button
-                                    type="submit"
-                                    style="
-                                        border:none;
-                                        background:none;
-                                        cursor:pointer;
-                                        text-decoration:underline;
-                                    "
-                                >
-
-                                    <?= (int)$hotel["estado"] === 1
-                                        ? "Desactivar"
-                                        : "Activar"
-                                    ?>
-
-                                </button>
-
-                            </form>
+                            <?= htmlspecialchars(
+                                $reserva["estado"]
+                            ) ?>
 
                         </td>
 
@@ -280,9 +225,12 @@
 
         </div>
 
+
     <?php endif; ?>
 
+
 </main>
+
 
 </body>
 

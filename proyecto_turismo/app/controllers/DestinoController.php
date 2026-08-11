@@ -20,6 +20,9 @@ class DestinoController
     {
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
+            CsrfHelper::validar();
+
+
             $nombre = trim($_POST["nombre"] ?? "");
             $provincia = trim($_POST["provincia"] ?? "");
             $descripcion = trim($_POST["descripcion"] ?? "");
@@ -79,6 +82,9 @@ class DestinoController
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
+            CsrfHelper::validar();
+
+
             $nombre = trim($_POST["nombre"] ?? "");
             $provincia = trim($_POST["provincia"] ?? "");
             $descripcion = trim($_POST["descripcion"] ?? "");
@@ -122,21 +128,32 @@ class DestinoController
             "/../views/admin/destinos/edit.php";
     }
 
-    public function estado()
-    {
-        $id = (int)($_GET["id"] ?? 0);
-
-        if ($id > 0) {
-
-            $modelo = new Destino();
-
-            $modelo->cambiarEstado($id);
-        }
-
-        header(
-            "Location: ?page=admin-destinos"
-        );
-
-        exit;
+public function estado()
+{
+    if (
+        $_SERVER["REQUEST_METHOD"] !== "POST"
+    ) {
+        http_response_code(405);
+        exit("Método no permitido.");
     }
+
+    CsrfHelper::validar();
+
+    $id =
+        (int)($_POST["id"] ?? 0);
+
+    if ($id > 0) {
+
+        $modelo =
+            new Destino();
+
+        $modelo->cambiarEstado($id);
+    }
+
+    header(
+        "Location: ?page=admin-destinos"
+    );
+
+    exit;
+}
 }

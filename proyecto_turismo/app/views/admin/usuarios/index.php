@@ -41,7 +41,7 @@
 
 <main class="dashboard-container">
 
-    <div class="welcome">
+    <section class="welcome">
 
         <h1>
             Usuarios registrados
@@ -51,7 +51,7 @@
             Administra las cuentas del sistema.
         </p>
 
-    </div>
+    </section>
 
 
     <div style="overflow-x:auto;">
@@ -95,6 +95,7 @@
                 <tr
                     style="
                         border-top:1px solid #ddd;
+                        text-align:center;
                     "
                 >
 
@@ -142,16 +143,39 @@
 
                         <?php else: ?>
 
-                            <a
-                                href="?page=admin-usuario-estado&id=<?= (int)$usuario["id"] ?>"
+
+                            <form
+                                method="POST"
+                                action="?page=admin-usuario-estado"
+                                style="display:inline;"
                             >
 
-                                <?= (int)$usuario["estado"] === 1
-                                    ? "Desactivar"
-                                    : "Activar"
-                                ?>
+                                <?= CsrfHelper::input() ?>
 
-                            </a>
+                                <input
+                                    type="hidden"
+                                    name="id"
+                                    value="<?= (int)$usuario["id"] ?>"
+                                >
+
+                                <button
+                                    type="submit"
+                                    style="
+                                        border:none;
+                                        background:none;
+                                        cursor:pointer;
+                                        text-decoration:underline;
+                                    "
+                                >
+
+                                    <?= (int)$usuario["estado"] === 1
+                                        ? "Desactivar"
+                                        : "Activar"
+                                    ?>
+
+                                </button>
+
+                            </form>
 
                         <?php endif; ?>
 
@@ -170,4 +194,5 @@
 </main>
 
 </body>
+
 </html>

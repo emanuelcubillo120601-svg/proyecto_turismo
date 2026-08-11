@@ -51,6 +51,8 @@
             method="POST"
             action="?page=restablecer-password"
         >
+         <?= CsrfHelper::input() ?>
+
 
             <input
                 type="hidden"

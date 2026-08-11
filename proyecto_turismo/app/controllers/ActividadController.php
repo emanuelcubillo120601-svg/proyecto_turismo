@@ -17,6 +17,7 @@ class ActividadController
             "/../views/admin/actividades/index.php";
     }
 
+
     public function crear()
     {
         $destinoModel = new Destino();
@@ -24,6 +25,8 @@ class ActividadController
         $destinos = $destinoModel->obtenerTodos();
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+            CsrfHelper::validar();
 
             $destino_id =
                 (int)($_POST["destino_id"] ?? 0);
@@ -66,7 +69,7 @@ class ActividadController
             if ((float)$precio < 0) {
 
                 $error =
-                    "El precio debe ser un número positivo.";
+                    "El precio debe ser positivo.";
 
                 require_once __DIR__ .
                     "/../views/admin/actividades/create.php";
@@ -97,28 +100,32 @@ class ActividadController
             "/../views/admin/actividades/create.php";
     }
 
+
     public function editar()
     {
-        $id = (int)($_GET["id"] ?? 0);
+        $id =
+            (int)($_GET["id"] ?? 0);
 
-        $modelo = new Actividad();
+        $modelo =
+            new Actividad();
 
         $actividad =
             $modelo->obtenerPorId($id);
 
         if (!$actividad) {
 
-            echo "Actividad no encontrada.";
-
-            return;
+            exit("Actividad no encontrada.");
         }
 
-        $destinoModel = new Destino();
+        $destinoModel =
+            new Destino();
 
         $destinos =
             $destinoModel->obtenerTodos();
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+            CsrfHelper::validar();
 
             $destino_id =
                 (int)($_POST["destino_id"] ?? 0);
@@ -180,14 +187,25 @@ class ActividadController
             "/../views/admin/actividades/edit.php";
     }
 
+
     public function estado()
     {
+        if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+
+            http_response_code(405);
+
+            exit("Método no permitido.");
+        }
+
+        CsrfHelper::validar();
+
         $id =
-            (int)($_GET["id"] ?? 0);
+            (int)($_POST["id"] ?? 0);
 
         if ($id > 0) {
 
-            $modelo = new Actividad();
+            $modelo =
+                new Actividad();
 
             $modelo->cambiarEstado($id);
         }

@@ -41,6 +41,8 @@
                 method="POST"
             >
 
+            <?= CsrfHelper::input() ?>
+
                 <div class="form-group">
 
                     <label for="nombre">

@@ -28,13 +28,17 @@ class UsuarioController
 
     public function estado()
     {
-        $id =
-            (int)($_GET["id"] ?? 0);
+        if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
-        /*
-         * Evitamos que el administrador
-         * se desactive a sí mismo.
-         */
+            http_response_code(405);
+
+            exit("Método no permitido.");
+        }
+
+        CsrfHelper::validar();
+
+        $id = (int)($_POST["id"] ?? 0);
+
         if (
             $id > 0 &&
             $id !== (int)$_SESSION["usuario_id"]

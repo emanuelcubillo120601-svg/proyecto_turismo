@@ -31,6 +31,9 @@ class PerfilController
     public function actualizar()
     {
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+        
+    CsrfHelper::validar();
+
 
             header("Location: ?page=perfil");
 
@@ -98,6 +101,9 @@ class PerfilController
     public function cambiarPassword()
     {
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+
+    CsrfHelper::validar();
+
 
             header("Location: ?page=perfil");
 

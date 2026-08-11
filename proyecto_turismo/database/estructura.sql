@@ -207,6 +207,8 @@ CREATE TABLE reservacion_actividades (
         FOREIGN KEY (actividad_id)
         REFERENCES actividades(id)
 
+);
+
 
 -- ==========================
 -- TABLA DE RECUPERACION DE PASSWORD
@@ -233,4 +235,97 @@ CREATE TABLE recuperacion_password (
 
 );
 
+
+-- ==========================
+-- TABLA DE FAVORITOS
+-- ==========================
+
+CREATE TABLE favoritos (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    usuario_id INT NOT NULL,
+
+    destino_id INT NOT NULL,
+
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_favorito_usuario
+        FOREIGN KEY (usuario_id)
+        REFERENCES usuarios(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_favorito_destino
+        FOREIGN KEY (destino_id)
+        REFERENCES destinos(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT uq_favorito
+        UNIQUE (usuario_id, destino_id)
+);
+
+
+-- ==========================
+-- TABLA DE COMENTARIOS
+-- ==========================
+
+CREATE TABLE comentarios (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    usuario_id INT NOT NULL,
+
+    destino_id INT NOT NULL,
+
+    comentario TEXT NOT NULL,
+
+    calificacion INT NOT NULL,
+
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_comentario_usuario
+        FOREIGN KEY (usuario_id)
+        REFERENCES usuarios(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_comentario_destino
+        FOREIGN KEY (destino_id)
+        REFERENCES destinos(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT chk_calificacion
+        CHECK (calificacion BETWEEN 1 AND 5)
+
+);
+
+
+
+-- ==========================
+-- TABLA DE BiTACORA
+-- ==========================
+
+
+CREATE TABLE bitacora (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    usuario_id INT,
+
+    accion VARCHAR(255) NOT NULL,
+
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_bitacora_usuario
+        FOREIGN KEY (usuario_id)
+        REFERENCES usuarios(id)
+        ON DELETE SET NULL
+);
+
+
+
+
+
+
+
+);
 );

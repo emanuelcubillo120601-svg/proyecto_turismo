@@ -34,6 +34,8 @@
 
     <form method="POST">
 
+    <?= CsrfHelper::input() ?>
+
         <div class="form-group">
 
             <label>Destino</label>

@@ -25,6 +25,9 @@ class HotelController
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
+            CsrfHelper::validar();
+
+
             $destino_id = (int)($_POST["destino_id"] ?? 0);
             $nombre = trim($_POST["nombre"] ?? "");
             $categoria = trim($_POST["categoria"] ?? "");
@@ -143,18 +146,45 @@ class HotelController
             "/../views/admin/hoteles/edit.php";
     }
 
-    public function estado()
-    {
-        $id = (int)($_GET["id"] ?? 0);
+public function estado()
+{
+    if (
+        $_SERVER["REQUEST_METHOD"] !== "POST"
+    ) {
 
-        if ($id > 0) {
+        http_response_code(405);
 
-            $modelo = new Hotel();
+        exit("Método no permitido.");
+    }
 
-            $modelo->cambiarEstado($id);
-        }
 
-        header("Location: ?page=admin-hoteles");
+    CsrfHelper::validar();
+
+
+    $id =
+        (int)($_POST["id"] ?? 0);
+
+
+    if ($id <= 0) {
+
+        header(
+            "Location: ?page=admin-hoteles"
+        );
+
         exit;
     }
+
+
+    $modelo = new Hotel();
+
+
+    $modelo->cambiarEstado($id);
+
+
+    header(
+        "Location: ?page=admin-hoteles"
+    );
+
+    exit;
+}
 }

@@ -66,6 +66,30 @@ switch ($page) {
         break;
 
 
+    case "recuperar-password":
+
+        require_once __DIR__ .
+            "/../app/controllers/AuthController.php";
+
+        $controller = new AuthController();
+
+        $controller->recuperarPassword();
+
+        break;
+
+
+    case "restablecer-password":
+
+        require_once __DIR__ .
+            "/../app/controllers/AuthController.php";
+
+        $controller = new AuthController();
+
+        $controller->restablecerPassword();
+
+        break;
+
+
     // ==========================
     // CLIENTE
     // ==========================
@@ -84,15 +108,12 @@ switch ($page) {
         break;
 
 
-    /*
-     * Estas rutas todavía son provisionales.
-     * Después vamos a convertirlas en vistas reales.
-     */
-
     case "destinos":
 
         if (!isset($_SESSION["usuario_id"])) {
+
             header("Location: ?page=login");
+
             exit;
         }
 
@@ -103,13 +124,15 @@ switch ($page) {
 
         $controller->destinos();
 
-        break;  
+        break;
 
 
     case "hoteles":
 
         if (!isset($_SESSION["usuario_id"])) {
+
             header("Location: ?page=login");
+
             exit;
         }
 
@@ -126,7 +149,9 @@ switch ($page) {
     case "actividades":
 
         if (!isset($_SESSION["usuario_id"])) {
+
             header("Location: ?page=login");
+
             exit;
         }
 
@@ -198,7 +223,7 @@ switch ($page) {
 
 
     // ==========================
-    // RESERVACIONES DEL CLIENTE
+    // RESERVACIONES CLIENTE
     // ==========================
 
     case "reservar":
@@ -210,7 +235,8 @@ switch ($page) {
             exit;
         }
 
-        require_once __DIR__ . "/../app/controllers/ReservaController.php";
+        require_once __DIR__ .
+            "/../app/controllers/ReservaController.php";
 
         $controller = new ReservaController();
 
@@ -228,11 +254,77 @@ switch ($page) {
             exit;
         }
 
-        require_once __DIR__ . "/../app/controllers/ReservaController.php";
+        require_once __DIR__ .
+            "/../app/controllers/ReservaController.php";
 
         $controller = new ReservaController();
 
         $controller->misReservas();
+
+        break;
+
+
+    // ==========================
+    // FAVORITOS
+    // ==========================
+
+    case "favorito":
+
+        if (!isset($_SESSION["usuario_id"])) {
+
+            header("Location: ?page=login");
+
+            exit;
+        }
+
+        require_once __DIR__ .
+            "/../app/controllers/FavoritoController.php";
+
+        $controller = new FavoritoController();
+
+        $controller->alternar();
+
+        break;
+
+
+    case "favoritos":
+
+        if (!isset($_SESSION["usuario_id"])) {
+
+            header("Location: ?page=login");
+
+            exit;
+        }
+
+        require_once __DIR__ .
+            "/../app/controllers/FavoritoController.php";
+
+        $controller = new FavoritoController();
+
+        $controller->index();
+
+        break;
+
+
+    // ==========================
+    // COMENTARIOS
+    // ==========================
+
+    case "comentario-crear":
+
+        if (!isset($_SESSION["usuario_id"])) {
+
+            header("Location: ?page=login");
+
+            exit;
+        }
+
+        require_once __DIR__ .
+            "/../app/controllers/ComentarioController.php";
+
+        $controller = new ComentarioController();
+
+        $controller->crear();
 
         break;
 
@@ -253,7 +345,56 @@ switch ($page) {
             exit;
         }
 
-        require_once __DIR__ . "/../app/views/admin/dashboard.php";
+        require_once __DIR__ .
+            "/../app/views/admin/dashboard.php";
+
+        break;
+
+
+    // ==========================
+    // ADMIN - USUARIOS
+    // ==========================
+
+    case "admin-usuarios":
+
+        if (
+            !isset($_SESSION["usuario_id"]) ||
+            (int)$_SESSION["rol_id"] !== 1
+        ) {
+
+            header("Location: ?page=login");
+
+            exit;
+        }
+
+        require_once __DIR__ .
+            "/../app/controllers/UsuarioController.php";
+
+        $controller = new UsuarioController();
+
+        $controller->index();
+
+        break;
+
+
+    case "admin-usuario-estado":
+
+        if (
+            !isset($_SESSION["usuario_id"]) ||
+            (int)$_SESSION["rol_id"] !== 1
+        ) {
+
+            header("Location: ?page=login");
+
+            exit;
+        }
+
+        require_once __DIR__ .
+            "/../app/controllers/UsuarioController.php";
+
+        $controller = new UsuarioController();
+
+        $controller->estado();
 
         break;
 
@@ -274,7 +415,8 @@ switch ($page) {
             exit;
         }
 
-        require_once __DIR__ . "/../app/controllers/DestinoController.php";
+        require_once __DIR__ .
+            "/../app/controllers/DestinoController.php";
 
         $controller = new DestinoController();
 
@@ -295,7 +437,8 @@ switch ($page) {
             exit;
         }
 
-        require_once __DIR__ . "/../app/controllers/DestinoController.php";
+        require_once __DIR__ .
+            "/../app/controllers/DestinoController.php";
 
         $controller = new DestinoController();
 
@@ -316,7 +459,8 @@ switch ($page) {
             exit;
         }
 
-        require_once __DIR__ . "/../app/controllers/DestinoController.php";
+        require_once __DIR__ .
+            "/../app/controllers/DestinoController.php";
 
         $controller = new DestinoController();
 
@@ -337,7 +481,8 @@ switch ($page) {
             exit;
         }
 
-        require_once __DIR__ . "/../app/controllers/DestinoController.php";
+        require_once __DIR__ .
+            "/../app/controllers/DestinoController.php";
 
         $controller = new DestinoController();
 
@@ -362,7 +507,8 @@ switch ($page) {
             exit;
         }
 
-        require_once __DIR__ . "/../app/controllers/HotelController.php";
+        require_once __DIR__ .
+            "/../app/controllers/HotelController.php";
 
         $controller = new HotelController();
 
@@ -383,7 +529,8 @@ switch ($page) {
             exit;
         }
 
-        require_once __DIR__ . "/../app/controllers/HotelController.php";
+        require_once __DIR__ .
+            "/../app/controllers/HotelController.php";
 
         $controller = new HotelController();
 
@@ -404,7 +551,8 @@ switch ($page) {
             exit;
         }
 
-        require_once __DIR__ . "/../app/controllers/HotelController.php";
+        require_once __DIR__ .
+            "/../app/controllers/HotelController.php";
 
         $controller = new HotelController();
 
@@ -425,7 +573,8 @@ switch ($page) {
             exit;
         }
 
-        require_once __DIR__ . "/../app/controllers/HotelController.php";
+        require_once __DIR__ .
+            "/../app/controllers/HotelController.php";
 
         $controller = new HotelController();
 
@@ -450,7 +599,8 @@ switch ($page) {
             exit;
         }
 
-        require_once __DIR__ . "/../app/controllers/ActividadController.php";
+        require_once __DIR__ .
+            "/../app/controllers/ActividadController.php";
 
         $controller = new ActividadController();
 
@@ -471,7 +621,8 @@ switch ($page) {
             exit;
         }
 
-        require_once __DIR__ . "/../app/controllers/ActividadController.php";
+        require_once __DIR__ .
+            "/../app/controllers/ActividadController.php";
 
         $controller = new ActividadController();
 
@@ -492,7 +643,8 @@ switch ($page) {
             exit;
         }
 
-        require_once __DIR__ . "/../app/controllers/ActividadController.php";
+        require_once __DIR__ .
+            "/../app/controllers/ActividadController.php";
 
         $controller = new ActividadController();
 
@@ -513,7 +665,8 @@ switch ($page) {
             exit;
         }
 
-        require_once __DIR__ . "/../app/controllers/ActividadController.php";
+        require_once __DIR__ .
+            "/../app/controllers/ActividadController.php";
 
         $controller = new ActividadController();
 
@@ -538,7 +691,8 @@ switch ($page) {
             exit;
         }
 
-        require_once __DIR__ . "/../app/controllers/ReservaController.php";
+        require_once __DIR__ .
+            "/../app/controllers/ReservaController.php";
 
         $controller = new ReservaController();
 
@@ -548,87 +702,60 @@ switch ($page) {
 
 
     // ==========================
-    // ERROR 404
+    // REPORTES
     // ==========================
-
-
-
-    require_once __DIR__ .
-        "/../app/controllers/UsuarioController.php";
-
-    $controller = new UsuarioController();
-
-    $controller->index();
-
-    break;
-
-
-case "admin-usuario-estado":
-
-    if (
-        !isset($_SESSION["usuario_id"]) ||
-        (int)$_SESSION["rol_id"] !== 1
-    ) {
-
-        header("Location: ?page=login");
-
-        exit;
-    }
-
-    require_once __DIR__ .
-        "/../app/controllers/UsuarioController.php";
-
-    $controller = new UsuarioController();
-
-    $controller->estado();
-
-    break;
 
     case "reportes":
 
-    if (
-        !isset($_SESSION["usuario_id"]) ||
-        (int)$_SESSION["rol_id"] !== 1
-    ) {
+        if (
+            !isset($_SESSION["usuario_id"]) ||
+            (int)$_SESSION["rol_id"] !== 1
+        ) {
 
-        header("Location: ?page=login");
+            header("Location: ?page=login");
 
-        exit;
-    }
+            exit;
+        }
 
-    require_once __DIR__ .
-        "/../app/controllers/ReporteController.php";
+        require_once __DIR__ .
+            "/../app/controllers/ReporteController.php";
 
-    $controller = new ReporteController();
+        $controller = new ReporteController();
 
-    $controller->index();
+        $controller->index();
 
-    break;
-
-case "recuperar-password":
-
-    require_once __DIR__ .
-        "/../app/controllers/AuthController.php";
-
-    $controller =
-        new AuthController();
-
-    $controller->recuperarPassword();
-
-    break;
+        break;
 
 
-case "restablecer-password":
+    // ==========================
+    // BITÁCORA
+    // ==========================
 
-    require_once __DIR__ .
-        "/../app/controllers/AuthController.php";
+    case "bitacora":
 
-    $controller =
-        new AuthController();
+        if (
+            !isset($_SESSION["usuario_id"]) ||
+            (int)$_SESSION["rol_id"] !== 1
+        ) {
 
-    $controller->restablecerPassword();
+            header("Location: ?page=login");
 
-    break;
+            exit;
+        }
+
+        require_once __DIR__ .
+            "/../app/controllers/BitacoraController.php";
+
+        $controller = new BitacoraController();
+
+        $controller->index();
+
+        break;
+
+
+    // ==========================
+    // ERROR 404
+    // ==========================
 
     default:
 
@@ -639,16 +766,4 @@ case "restablecer-password":
         echo "<p>La página solicitada no existe.</p>";
 
         break;
-
-        case "admin-usuarios":
-
-    if (
-        !isset($_SESSION["usuario_id"]) ||
-        (int)$_SESSION["rol_id"] !== 1
-    ) {
-
-        header("Location: ?page=login");
-
-        exit;
-    }    
 }

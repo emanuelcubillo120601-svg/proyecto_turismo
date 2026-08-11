@@ -5,32 +5,49 @@ require_once __DIR__ . "/../models/Hotel.php";
 require_once __DIR__ . "/../models/Actividad.php";
 require_once __DIR__ . "/../services/ClimaService.php";
 require_once __DIR__ . "/../services/MonedaService.php";
+require_once __DIR__ . "/../models/Comentario.php";
 
 class ClienteController
 {
 
-    public function destinos()
-    {
-        $modelo = new Destino();
+public function destinos()
+{
+    $modelo =
+        new Destino();
 
-        $destinos = $modelo->obtenerActivos();
+    $destinos =
+        $modelo->obtenerActivos();
 
-        $climaService = new ClimaService();
+    $climaService =
+        new ClimaService();
 
-        foreach ($destinos as &$destino) {
+    $comentarioModel =
+        new Comentario();
 
-            $destino["clima"] =
-                $climaService->obtenerClima(
-                    $destino["latitud"],
-                    $destino["longitud"]
-                );
-        }
+    foreach ($destinos as &$destino) {
 
-        unset($destino);
+        $destino["clima"] =
+            $climaService->obtenerClima(
+                $destino["latitud"],
+                $destino["longitud"]
+            );
 
-        require_once __DIR__ .
-            "/../views/cliente/destinos.php";
+        $destino["comentarios"] =
+            $comentarioModel->obtenerPorDestino(
+                $destino["id"]
+            );
+
+        $destino["promedio"] =
+            $comentarioModel->promedioPorDestino(
+                $destino["id"]
+            );
     }
+
+    unset($destino);
+
+    require_once __DIR__ .
+        "/../views/cliente/destinos.php";
+}
 
     public function hoteles()
     {

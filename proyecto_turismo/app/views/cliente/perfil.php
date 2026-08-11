@@ -90,6 +90,7 @@
             method="POST"
             action="?page=perfil-actualizar"
         >
+            <?= CsrfHelper::input() ?>
 
             <div class="form-group">
 
@@ -163,6 +164,7 @@
             method="POST"
             action="?page=perfil-password"
         >
+            <?= CsrfHelper::input() ?>
 
             <div class="form-group">
 

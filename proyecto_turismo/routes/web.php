@@ -149,11 +149,50 @@ switch ($page) {
             exit;
         }
 
-        echo "<h1>Mi perfil</h1>";
+        require_once __DIR__ .
+            "/../app/controllers/PerfilController.php";
 
-        echo "<p>Módulo de perfil en desarrollo.</p>";
+        $controller = new PerfilController();
 
-        echo '<a href="?page=cliente">Volver al inicio</a>';
+        $controller->index();
+
+        break;
+
+
+    case "perfil-actualizar":
+
+        if (!isset($_SESSION["usuario_id"])) {
+
+            header("Location: ?page=login");
+
+            exit;
+        }
+
+        require_once __DIR__ .
+            "/../app/controllers/PerfilController.php";
+
+        $controller = new PerfilController();
+
+        $controller->actualizar();
+
+        break;
+
+
+    case "perfil-password":
+
+        if (!isset($_SESSION["usuario_id"])) {
+
+            header("Location: ?page=login");
+
+            exit;
+        }
+
+        require_once __DIR__ .
+            "/../app/controllers/PerfilController.php";
+
+        $controller = new PerfilController();
+
+        $controller->cambiarPassword();
 
         break;
 
@@ -521,4 +560,68 @@ switch ($page) {
         echo "<p>La página solicitada no existe.</p>";
 
         break;
+
+        case "admin-usuarios":
+
+    if (
+        !isset($_SESSION["usuario_id"]) ||
+        (int)$_SESSION["rol_id"] !== 1
+    ) {
+
+        header("Location: ?page=login");
+
+        exit;
+    }
+
+    require_once __DIR__ .
+        "/../app/controllers/UsuarioController.php";
+
+    $controller = new UsuarioController();
+
+    $controller->index();
+
+    break;
+
+
+case "admin-usuario-estado":
+
+    if (
+        !isset($_SESSION["usuario_id"]) ||
+        (int)$_SESSION["rol_id"] !== 1
+    ) {
+
+        header("Location: ?page=login");
+
+        exit;
+    }
+
+    require_once __DIR__ .
+        "/../app/controllers/UsuarioController.php";
+
+    $controller = new UsuarioController();
+
+    $controller->estado();
+
+    break;
+
+    case "reportes":
+
+    if (
+        !isset($_SESSION["usuario_id"]) ||
+        (int)$_SESSION["rol_id"] !== 1
+    ) {
+
+        header("Location: ?page=login");
+
+        exit;
+    }
+
+    require_once __DIR__ .
+        "/../app/controllers/ReporteController.php";
+
+    $controller = new ReporteController();
+
+    $controller->index();
+
+    break;
 }

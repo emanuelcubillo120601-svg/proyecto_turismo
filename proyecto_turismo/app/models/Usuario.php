@@ -73,4 +73,110 @@ public function buscarPorCorreo(string $correo)
 
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
+public function obtenerPorId($id)
+{
+    $sql = "SELECT
+                id,
+                rol_id,
+                nombre,
+                correo,
+                telefono,
+                fotografia,
+                estado,
+                fecha_registro
+            FROM usuarios
+            WHERE id = :id
+            LIMIT 1";
+
+    $stmt = $this->conexion->prepare($sql);
+
+    $stmt->execute([
+        ":id" => $id
+    ]);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
+public function actualizarPerfil(
+    $id,
+    $nombre,
+    $correo,
+    $telefono
+) {
+    $sql = "UPDATE usuarios
+            SET
+                nombre = :nombre,
+                correo = :correo,
+                telefono = :telefono
+            WHERE id = :id";
+
+    $stmt = $this->conexion->prepare($sql);
+
+    return $stmt->execute([
+        ":id" => $id,
+        ":nombre" => $nombre,
+        ":correo" => $correo,
+        ":telefono" => $telefono
+    ]);
+}
+
+
+public function actualizarPassword($id, $password)
+{
+    $sql = "UPDATE usuarios
+            SET password = :password
+            WHERE id = :id";
+
+    $stmt = $this->conexion->prepare($sql);
+
+    return $stmt->execute([
+        ":id" => $id,
+        ":password" => $password
+    ]);
+}
+
+
+public function obtenerTodos()
+{
+    $sql = "SELECT
+                usuarios.id,
+                usuarios.nombre,
+                usuarios.correo,
+                usuarios.telefono,
+                usuarios.estado,
+                usuarios.fecha_registro,
+                roles.nombre AS rol
+            FROM usuarios
+
+            INNER JOIN roles
+                ON usuarios.rol_id = roles.id
+
+            ORDER BY usuarios.id DESC";
+
+    $stmt = $this->conexion->prepare($sql);
+
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+public function cambiarEstado($id)
+{
+    $sql = "UPDATE usuarios
+            SET estado =
+                CASE
+                    WHEN estado = 1 THEN 0
+                    ELSE 1
+                END
+            WHERE id = :id";
+
+    $stmt = $this->conexion->prepare($sql);
+
+    return $stmt->execute([
+        ":id" => $id
+    ]);
+}
 }

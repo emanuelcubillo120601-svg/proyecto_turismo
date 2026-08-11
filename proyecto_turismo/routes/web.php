@@ -183,4 +183,51 @@ case "admin-hotel-estado":
     $controller->estado();
 
     break;
+
+    case "admin-actividades":
+
+    require_once __DIR__ .
+        "/../app/controllers/ActividadController.php";
+
+    $controller = new ActividadController();
+
+    $controller->index();
+
+    break;
+
+
+case "admin-actividad-crear":
+
+    require_once __DIR__ .
+        "/../app/controllers/ActividadController.php";
+
+    $controller = new ActividadController();
+
+    $controller->crear();
+
+    break;
+
+
+case "admin-actividad-editar":
+
+    require_once __DIR__ .
+        "/../app/controllers/ActividadController.php";
+
+    $controller = new ActividadController();
+
+    $controller->editar();
+
+    break;
+
+
+case "admin-actividad-estado":
+
+    require_once __DIR__ .
+        "/../app/controllers/ActividadController.php";
+
+    $controller = new ActividadController();
+
+    $controller->estado();
+
+    break;
 }

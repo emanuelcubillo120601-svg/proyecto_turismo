@@ -144,3 +144,67 @@ CREATE TABLE actividades (
         REFERENCES destinos(id)
 
 );
+
+-- ==========================
+-- TABLA DE RESERVACIONES
+-- ==========================
+
+CREATE TABLE reservaciones (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    usuario_id INT NOT NULL,
+
+    hotel_id INT NOT NULL,
+
+    fecha_entrada DATE NOT NULL,
+
+    fecha_salida DATE NOT NULL,
+
+    cantidad_personas INT NOT NULL,
+
+    total_estimado DECIMAL(12, 2) NOT NULL DEFAULT 0,
+
+    estado VARCHAR(30) NOT NULL DEFAULT 'Confirmada',
+
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_reservacion_usuario
+        FOREIGN KEY (usuario_id)
+        REFERENCES usuarios(id),
+
+    CONSTRAINT fk_reservacion_hotel
+        FOREIGN KEY (hotel_id)
+        REFERENCES hoteles(id)
+
+);
+
+
+-- ==========================
+-- ACTIVIDADES DE RESERVACION
+-- ==========================
+
+CREATE TABLE reservacion_actividades (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    reservacion_id INT NOT NULL,
+
+    actividad_id INT NOT NULL,
+
+    cantidad_personas INT NOT NULL,
+
+    precio_unitario DECIMAL(10, 2) NOT NULL,
+
+    subtotal DECIMAL(12, 2) NOT NULL,
+
+    CONSTRAINT fk_ra_reservacion
+        FOREIGN KEY (reservacion_id)
+        REFERENCES reservaciones(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_ra_actividad
+        FOREIGN KEY (actividad_id)
+        REFERENCES actividades(id)
+
+);

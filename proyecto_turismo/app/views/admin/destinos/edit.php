@@ -1,7 +1,13 @@
+<?php
+/** @var array $destino */
+?>
+
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -9,25 +15,38 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Editar destino</title>
+    <title>
+        Editar destino
+    </title>
 
     <link
         rel="stylesheet"
         href="/proyecto_turismo/public/css/styles.css"
     >
+
 </head>
 
 <body>
 
+
 <main class="dashboard-container">
 
-    <h1>Editar destino</h1>
+    <h1>
+        Editar destino
+    </h1>
+
 
     <p>
+
         <a href="?page=admin-destinos">
             ← Volver
         </a>
+
     </p>
+
+
+    <br>
+
 
     <?php if (isset($error)): ?>
 
@@ -35,15 +54,24 @@
             <?= htmlspecialchars($error) ?>
         </p>
 
+        <br>
+
     <?php endif; ?>
 
-    <form method="POST">
+
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+    >
 
         <?= CsrfHelper::input() ?>
 
+
         <div class="form-group">
 
-            <label>Nombre</label>
+            <label>
+                Nombre
+            </label>
 
             <input
                 type="text"
@@ -54,9 +82,12 @@
 
         </div>
 
+
         <div class="form-group">
 
-            <label>Provincia</label>
+            <label>
+                Provincia
+            </label>
 
             <input
                 type="text"
@@ -67,9 +98,12 @@
 
         </div>
 
+
         <div class="form-group">
 
-            <label>Descripción</label>
+            <label>
+                Descripción
+            </label>
 
             <textarea
                 name="descripcion"
@@ -79,21 +113,50 @@
 
         </div>
 
+
         <div class="form-group">
 
-            <label>Imagen</label>
+            <label>
+                Imagen
+            </label>
+
+
+            <?php if (!empty($destino["imagen"])): ?>
+
+                <img
+                    src="/proyecto_turismo/public/<?= htmlspecialchars($destino["imagen"]) ?>"
+                    alt="Imagen actual"
+                    style="
+                        width:220px;
+                        height:150px;
+                        object-fit:cover;
+                        border-radius:10px;
+                        display:block;
+                        margin:10px 0;
+                    "
+                >
+
+            <?php endif; ?>
+
 
             <input
-                type="text"
+                type="file"
                 name="imagen"
-                value="<?= htmlspecialchars($destino["imagen"] ?? "") ?>"
+                accept=".jpg,.jpeg,.png,.webp"
             >
+
+            <small>
+                Déjalo vacío para conservar la imagen actual.
+            </small>
 
         </div>
 
+
         <div class="form-group">
 
-            <label>Latitud</label>
+            <label>
+                Latitud
+            </label>
 
             <input
                 type="number"
@@ -104,9 +167,12 @@
 
         </div>
 
+
         <div class="form-group">
 
-            <label>Longitud</label>
+            <label>
+                Longitud
+            </label>
 
             <input
                 type="number"
@@ -116,6 +182,7 @@
             >
 
         </div>
+
 
         <button
             type="submit"

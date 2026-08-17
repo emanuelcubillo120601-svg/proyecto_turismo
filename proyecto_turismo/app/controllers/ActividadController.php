@@ -1,17 +1,30 @@
 <?php
 
-require_once __DIR__ . "/../models/Actividad.php";
-require_once __DIR__ . "/../models/Destino.php";
+require_once __DIR__ .
+    "/../models/Actividad.php";
+
+require_once __DIR__ .
+    "/../models/Destino.php";
+
+require_once __DIR__ .
+    "/../helpers/ImagenHelper.php";
+
 
 class ActividadController
 {
     public function index()
     {
-        $buscar = trim($_GET["buscar"] ?? "");
+        $buscar =
+            trim($_GET["buscar"] ?? "");
 
-        $modelo = new Actividad();
 
-        $actividades = $modelo->obtenerTodos($buscar);
+        $modelo =
+            new Actividad();
+
+
+        $actividades =
+            $modelo->obtenerTodos($buscar);
+
 
         require_once __DIR__ .
             "/../views/admin/actividades/index.php";
@@ -20,34 +33,42 @@ class ActividadController
 
     public function crear()
     {
-        $destinoModel = new Destino();
+        $destinoModel =
+            new Destino();
 
-        $destinos = $destinoModel->obtenerTodos();
+
+        $destinos =
+            $destinoModel->obtenerTodos();
+
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             CsrfHelper::validar();
 
+
             $destino_id =
                 (int)($_POST["destino_id"] ?? 0);
+
 
             $nombre =
                 trim($_POST["nombre"] ?? "");
 
+
             $descripcion =
                 trim($_POST["descripcion"] ?? "");
+
 
             $precio =
                 trim($_POST["precio"] ?? "");
 
+
             $duracion =
                 trim($_POST["duracion"] ?? "");
+
 
             $cupo_maximo =
                 (int)($_POST["cupo_maximo"] ?? 0);
 
-            $imagen =
-                trim($_POST["imagen"] ?? "");
 
             if (
                 $destino_id <= 0 ||
@@ -66,10 +87,22 @@ class ActividadController
                 return;
             }
 
-            if ((float)$precio < 0) {
+
+            $imagen = null;
+
+
+            try {
+
+                $imagen =
+                    ImagenHelper::subir(
+                        $_FILES["imagen"] ?? [],
+                        "actividades"
+                    );
+
+            } catch (Exception $e) {
 
                 $error =
-                    "El precio debe ser positivo.";
+                    $e->getMessage();
 
                 require_once __DIR__ .
                     "/../views/admin/actividades/create.php";
@@ -77,7 +110,10 @@ class ActividadController
                 return;
             }
 
-            $modelo = new Actividad();
+
+            $modelo =
+                new Actividad();
+
 
             $modelo->crear(
                 $destino_id,
@@ -89,12 +125,14 @@ class ActividadController
                 $imagen
             );
 
+
             header(
                 "Location: ?page=admin-actividades"
             );
 
             exit;
         }
+
 
         require_once __DIR__ .
             "/../views/admin/actividades/create.php";
@@ -106,47 +144,59 @@ class ActividadController
         $id =
             (int)($_GET["id"] ?? 0);
 
+
         $modelo =
             new Actividad();
+
 
         $actividad =
             $modelo->obtenerPorId($id);
 
+
         if (!$actividad) {
 
-            exit("Actividad no encontrada.");
+            exit(
+                "Actividad no encontrada."
+            );
         }
+
 
         $destinoModel =
             new Destino();
 
+
         $destinos =
             $destinoModel->obtenerTodos();
+
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             CsrfHelper::validar();
 
+
             $destino_id =
                 (int)($_POST["destino_id"] ?? 0);
+
 
             $nombre =
                 trim($_POST["nombre"] ?? "");
 
+
             $descripcion =
                 trim($_POST["descripcion"] ?? "");
+
 
             $precio =
                 trim($_POST["precio"] ?? "");
 
+
             $duracion =
                 trim($_POST["duracion"] ?? "");
+
 
             $cupo_maximo =
                 (int)($_POST["cupo_maximo"] ?? 0);
 
-            $imagen =
-                trim($_POST["imagen"] ?? "");
 
             if (
                 $destino_id <= 0 ||
@@ -165,6 +215,32 @@ class ActividadController
                 return;
             }
 
+
+            $imagen =
+                $actividad["imagen"] ?? null;
+
+
+            try {
+
+                $imagen =
+                    ImagenHelper::subir(
+                        $_FILES["imagen"] ?? [],
+                        "actividades",
+                        $actividad["imagen"] ?? null
+                    );
+
+            } catch (Exception $e) {
+
+                $error =
+                    $e->getMessage();
+
+                require_once __DIR__ .
+                    "/../views/admin/actividades/edit.php";
+
+                return;
+            }
+
+
             $modelo->actualizar(
                 $id,
                 $destino_id,
@@ -176,12 +252,14 @@ class ActividadController
                 $imagen
             );
 
+
             header(
                 "Location: ?page=admin-actividades"
             );
 
             exit;
         }
+
 
         require_once __DIR__ .
             "/../views/admin/actividades/edit.php";
@@ -190,17 +268,24 @@ class ActividadController
 
     public function estado()
     {
-        if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+        if (
+            $_SERVER["REQUEST_METHOD"] !== "POST"
+        ) {
 
             http_response_code(405);
 
-            exit("Método no permitido.");
+            exit(
+                "Método no permitido."
+            );
         }
+
 
         CsrfHelper::validar();
 
+
         $id =
             (int)($_POST["id"] ?? 0);
+
 
         if ($id > 0) {
 
@@ -209,6 +294,7 @@ class ActividadController
 
             $modelo->cambiarEstado($id);
         }
+
 
         header(
             "Location: ?page=admin-actividades"

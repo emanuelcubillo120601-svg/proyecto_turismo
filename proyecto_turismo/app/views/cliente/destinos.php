@@ -94,6 +94,23 @@
 
             <div class="dashboard-card">
 
+                <?php if (!empty($destino["imagen"])): ?>
+
+                    <img
+                        src="/proyecto_turismo/public/<?= htmlspecialchars($destino["imagen"]) ?>"
+                        alt="<?= htmlspecialchars($destino["nombre"]) ?>"
+                        style="
+                            width:100%;
+                            height:220px;
+                            object-fit:cover;
+                            border-radius:12px;
+                            margin-bottom:15px;
+                        "
+                        >
+
+                <?php endif; ?>
+
+
                 <h3>
                     <?= htmlspecialchars(
                         $destino["nombre"]

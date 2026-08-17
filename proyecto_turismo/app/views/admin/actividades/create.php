@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -23,17 +24,20 @@
 
 <body>
 
+
 <main class="dashboard-container">
 
     <h1>
         Registrar actividad
     </h1>
 
+
     <p>
         <a href="?page=admin-actividades">
             ← Volver
         </a>
     </p>
+
 
     <br>
 
@@ -49,7 +53,10 @@
     <?php endif; ?>
 
 
-    <form method="POST">
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+    >
 
         <?= CsrfHelper::input() ?>
 
@@ -78,9 +85,7 @@
                     <option
                         value="<?= (int)$destino["id"] ?>"
                     >
-
                         <?= htmlspecialchars($destino["nombre"]) ?>
-
                     </option>
 
                 <?php endforeach; ?>
@@ -92,9 +97,7 @@
 
         <div class="form-group">
 
-            <label>
-                Nombre
-            </label>
+            <label>Nombre</label>
 
             <input
                 type="text"
@@ -107,9 +110,7 @@
 
         <div class="form-group">
 
-            <label>
-                Descripción
-            </label>
+            <label>Descripción</label>
 
             <textarea
                 name="descripcion"
@@ -122,9 +123,7 @@
 
         <div class="form-group">
 
-            <label>
-                Precio
-            </label>
+            <label>Precio</label>
 
             <input
                 type="number"
@@ -139,9 +138,7 @@
 
         <div class="form-group">
 
-            <label>
-                Duración
-            </label>
+            <label>Duración</label>
 
             <input
                 type="text"
@@ -171,13 +168,18 @@
         <div class="form-group">
 
             <label>
-                Imagen
+                Imagen de la actividad
             </label>
 
             <input
-                type="text"
+                type="file"
                 name="imagen"
+                accept=".jpg,.jpeg,.png,.webp"
             >
+
+            <small>
+                JPG, PNG o WEBP. Máximo 5 MB.
+            </small>
 
         </div>
 

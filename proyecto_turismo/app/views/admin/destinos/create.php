@@ -11,19 +11,38 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Nuevo destino | Costa Rica Travel</title>
+    <title>
+        Nuevo destino
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/proyecto_turismo/public/css/styles.css"
+    >
 
 </head>
 
 <body>
 
-    <h1>Registrar nuevo destino</h1>
 
-    <a href="?page=admin-destinos">
-        ← Volver a destinos
-    </a>
+<main class="dashboard-container">
 
-    <hr>
+    <h1>
+        Registrar nuevo destino
+    </h1>
+
+
+    <p>
+
+        <a href="?page=admin-destinos">
+            ← Volver
+        </a>
+
+    </p>
+
+
+    <br>
+
 
     <?php if (isset($error)): ?>
 
@@ -31,138 +50,159 @@
             <?= htmlspecialchars($error) ?>
         </p>
 
+        <br>
+
     <?php endif; ?>
 
 
-    <form method="POST">
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+    >
 
-    <?= CsrfHelper::input() ?>
+        <?= CsrfHelper::input() ?>
 
 
-        <div>
+        <div class="form-group">
 
-            <label for="nombre">
-                Nombre del destino:
+            <label>
+                Nombre
             </label>
-
-            <br>
 
             <input
                 type="text"
-                id="nombre"
                 name="nombre"
+                value="<?= htmlspecialchars($_POST["nombre"] ?? "") ?>"
                 required
             >
 
         </div>
 
-        <br>
 
+        <div class="form-group">
 
-        <div>
-
-            <label for="provincia">
-                Provincia:
+            <label>
+                Provincia
             </label>
 
-            <br>
-
-            <input
-                type="text"
-                id="provincia"
+            <select
                 name="provincia"
                 required
+                style="
+                    width:100%;
+                    padding:12px;
+                "
             >
+
+                <option value="">
+                    Seleccione
+                </option>
+
+                <?php
+
+                $provincias = [
+                    "San José",
+                    "Alajuela",
+                    "Cartago",
+                    "Heredia",
+                    "Guanacaste",
+                    "Puntarenas",
+                    "Limón"
+                ];
+
+                foreach ($provincias as $provincia):
+
+                ?>
+
+                    <option
+                        value="<?= htmlspecialchars($provincia) ?>"
+                    >
+                        <?= htmlspecialchars($provincia) ?>
+                    </option>
+
+                <?php endforeach; ?>
+
+            </select>
 
         </div>
 
-        <br>
 
+        <div class="form-group">
 
-        <div>
-
-            <label for="descripcion">
-                Descripción:
+            <label>
+                Descripción
             </label>
 
-            <br>
-
             <textarea
-                id="descripcion"
                 name="descripcion"
                 rows="5"
                 required
-            ></textarea>
+            ><?= htmlspecialchars($_POST["descripcion"] ?? "") ?></textarea>
 
         </div>
 
-        <br>
 
+        <div class="form-group">
 
-        <div>
-
-            <label for="imagen">
-                Imagen:
+            <label>
+                Imagen del destino
             </label>
 
-            <br>
-
             <input
-                type="text"
-                id="imagen"
+                type="file"
                 name="imagen"
+                accept=".jpg,.jpeg,.png,.webp"
             >
+
+            <small>
+                JPG, PNG o WEBP. Máximo 5 MB.
+            </small>
 
         </div>
 
-        <br>
 
+        <div class="form-group">
 
-        <div>
-
-            <label for="latitud">
-                Latitud:
+            <label>
+                Latitud
             </label>
-
-            <br>
 
             <input
                 type="number"
                 step="any"
-                id="latitud"
                 name="latitud"
+                value="<?= htmlspecialchars($_POST["latitud"] ?? "") ?>"
             >
 
         </div>
 
-        <br>
 
+        <div class="form-group">
 
-        <div>
-
-            <label for="longitud">
-                Longitud:
+            <label>
+                Longitud
             </label>
-
-            <br>
 
             <input
                 type="number"
                 step="any"
-                id="longitud"
                 name="longitud"
+                value="<?= htmlspecialchars($_POST["longitud"] ?? "") ?>"
             >
 
         </div>
 
-        <br>
 
-
-        <button type="submit">
+        <button
+            type="submit"
+            class="btn btn-primary"
+        >
             Guardar destino
         </button>
 
     </form>
+
+</main>
 
 </body>
 

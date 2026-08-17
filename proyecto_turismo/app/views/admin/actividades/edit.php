@@ -1,4 +1,10 @@
+<?php
+/** @var array $actividad */
+/** @var array $destinos */
+?>
+
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -23,17 +29,22 @@
 
 <body>
 
+
 <main class="dashboard-container">
 
     <h1>
         Editar actividad
     </h1>
 
+
     <p>
+
         <a href="?page=admin-actividades">
             ← Volver
         </a>
+
     </p>
+
 
     <br>
 
@@ -49,16 +60,17 @@
     <?php endif; ?>
 
 
-    <form method="POST">
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+    >
 
         <?= CsrfHelper::input() ?>
 
 
         <div class="form-group">
 
-            <label>
-                Destino
-            </label>
+            <label>Destino</label>
 
             <select
                 name="destino_id"
@@ -80,9 +92,7 @@
                                 : ""
                         ?>
                     >
-
                         <?= htmlspecialchars($destino["nombre"]) ?>
-
                     </option>
 
                 <?php endforeach; ?>
@@ -94,9 +104,7 @@
 
         <div class="form-group">
 
-            <label>
-                Nombre
-            </label>
+            <label>Nombre</label>
 
             <input
                 type="text"
@@ -110,9 +118,7 @@
 
         <div class="form-group">
 
-            <label>
-                Descripción
-            </label>
+            <label>Descripción</label>
 
             <textarea
                 name="descripcion"
@@ -125,9 +131,7 @@
 
         <div class="form-group">
 
-            <label>
-                Precio
-            </label>
+            <label>Precio</label>
 
             <input
                 type="number"
@@ -143,9 +147,7 @@
 
         <div class="form-group">
 
-            <label>
-                Duración
-            </label>
+            <label>Duración</label>
 
             <input
                 type="text"
@@ -158,9 +160,7 @@
 
         <div class="form-group">
 
-            <label>
-                Cupo máximo
-            </label>
+            <label>Cupo máximo</label>
 
             <input
                 type="number"
@@ -175,15 +175,36 @@
 
         <div class="form-group">
 
-            <label>
-                Imagen
-            </label>
+            <label>Imagen</label>
+
+
+            <?php if (!empty($actividad["imagen"])): ?>
+
+                <img
+                    src="/proyecto_turismo/public/<?= htmlspecialchars($actividad["imagen"]) ?>"
+                    alt="Imagen actual"
+                    style="
+                        width:220px;
+                        height:150px;
+                        object-fit:cover;
+                        border-radius:10px;
+                        display:block;
+                        margin:10px 0;
+                    "
+                >
+
+            <?php endif; ?>
+
 
             <input
-                type="text"
+                type="file"
                 name="imagen"
-                value="<?= htmlspecialchars($actividad["imagen"] ?? "") ?>"
+                accept=".jpg,.jpeg,.png,.webp"
             >
+
+            <small>
+                Déjalo vacío para conservar la imagen actual.
+            </small>
 
         </div>
 
